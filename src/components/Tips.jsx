@@ -83,12 +83,12 @@ const Tips = () => {
                   </div>
                 </div>
 
-                {/* CENTER DOT */}
+                
                 <div className="relative z-10 flex items-center justify-center my-6 md:my-0">
                   <div className="w-6 h-6 rounded-full bg-gradient-to-r from-orange-500 to-red-500 border-4 border-white shadow-lg"></div>
                 </div>
 
-                {/* RIGHT SPACE */}
+              
                 <div className="hidden md:block md:w-1/2"></div>
               </div>
             );
