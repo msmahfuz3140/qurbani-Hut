@@ -40,10 +40,10 @@ export default function BookForm({ open, setOpen }) {
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center p-4">
 
-      {/* Modal */}
+
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 relative animate-[fadeIn_.3s_ease]">
 
-        {/* Close */}
+
         <button
           onClick={() => setOpen(false)}
           className="absolute top-4 right-4 text-stone-400 hover:text-black"
@@ -97,7 +97,7 @@ export default function BookForm({ open, setOpen }) {
 
           <button
             type="submit"
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl transition"
           >
             Submit Booking
           </button>
