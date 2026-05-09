@@ -53,7 +53,7 @@ export function UserUpdate({ customTrigger, isOpen, onOpenChange }) {
           className="bg-stone-900 text-stone-50 font-bold px-8 h-12 rounded-xl hover:bg-blue-500 transition-all active:scale-95 text-xs uppercase tracking-widest"
           startContent={<IoSettingsOutline size={18} />}
         >
-          Account Settings
+          Update Profile
         </Button>
       )}
 
@@ -84,7 +84,7 @@ export function UserUpdate({ customTrigger, isOpen, onOpenChange }) {
                       Full Name
                     </label>
                     <div className="relative flex items-center">
-                      <IoPersonOutline className="absolute left-4 text-stone-400 size-5 z-10" />
+                      
                       <Input
                         name="name"
                         placeholder="John Doe"
@@ -107,7 +107,7 @@ export function UserUpdate({ customTrigger, isOpen, onOpenChange }) {
                       Avatar URL
                     </label>
                     <div className="relative flex items-center">
-                      <IoLinkOutline className="absolute left-4 text-stone-400 size-5 z-10" />
+                      
                       <Input
                         name="image"
                         placeholder="https://example.com/avatar.jpg"

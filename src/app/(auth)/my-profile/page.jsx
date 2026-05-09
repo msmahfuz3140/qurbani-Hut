@@ -56,74 +56,16 @@ const MyProfile = () => {
                 <h1 className="text-4xl font-serif text-stone-900 tracking-tight">
                   {user?.name}
                 </h1>
-                <Chip
-                  variant="flat"
-                  className="bg-orange-500 text-white font-black uppercase tracking-[0.2em] text-[9px] h-5 rounded-md self-center md:self-auto"
-                >
-                  Trusted Supporter
-                </Chip>
+                
               </div>
-              <p className="text-stone-500 font-medium flex items-center justify-center md:justify-start gap-2">
-                <IoLocationOutline className="text-orange-500" /> New York, USA
-              </p>
+              
             </div>
             <UserUpdate />
           </Card.Content>
         </Card>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          <div className="md:col-span-5 space-y-6">
-            <Card className="border border-stone-200 shadow-sm rounded-xl bg-white">
-              <Card.Header className="px-6 pt-6 pb-2">
-                <Card.Title className="text-xs font-black uppercase tracking-[0.3em] text-stone-400">
-                  Quick Access
-                </Card.Title>
-              </Card.Header>
-              <Card.Content className="p-2 space-y-1">
-                {menuItems.map((item) => (
-                  <button
-                    key={item.label}
-                    className="w-full flex items-center justify-between p-4 hover:bg-stone-50 rounded-xl transition-colors group"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="p-2 bg-stone-100 rounded-lg text-stone-900 group-hover:bg-orange-100 group-hover:text-orange-600 transition-colors">
-                        {item.icon}
-                      </div>
-                      <span className="font-bold text-stone-800 text-sm tracking-tight">
-                        {item.label}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {item.count && (
-                        <span className="text-xs font-black text-stone-300">
-                          {item.count}
-                        </span>
-                      )}
-                      <IoChevronForward className="text-stone-300" />
-                    </div>
-                  </button>
-                ))}
-              </Card.Content>
-            </Card>
-
-            <Card className="border-none shadow-xl rounded-xl bg-orange-500 p-8 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl" />
-              <div className="relative z-10 space-y-4">
-                <h3 className="text-xl font-serif italic">QurbaniHut Rewards</h3>
-                <div>
-                  <p className="text-4xl font-bold">450</p>
-                  <p className="text-orange-100 text-xs font-black uppercase tracking-widest">
-                    Salaam Points Balance
-                  </p>
-                </div>
-                <Button className="w-full bg-stone-900 text-white rounded-xl font-bold text-xs uppercase tracking-widest h-10">
-                  Redeem Points
-                </Button>
-              </div>
-            </Card>
-          </div>
-
-          <div className="md:col-span-7">
+        <div className="container mx-auto">
+          <div className="w-full">
             <Card className="border border-stone-200 shadow-sm rounded-xl bg-white h-full">
               <Card.Header className="px-8 pt-8 pb-4 border-b border-stone-100">
                 <Card.Title className="text-xl font-bold text-stone-900 uppercase tracking-tight">
