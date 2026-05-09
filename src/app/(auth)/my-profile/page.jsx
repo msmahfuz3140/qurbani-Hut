@@ -71,7 +71,7 @@ const MyProfile = () => {
             </Card.Title>
           </Card.Header>
           <Card.Content className="p-8 space-y-8">
-            <div className="grid grid-cols-1 gap-8">
+            <div className="container mx-auto flex flex-col gap-8">
               <div className="space-y-1">
                 <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
                   User Name
@@ -85,29 +85,13 @@ const MyProfile = () => {
                 <p className="text-stone-800 font-bold">{user?.email}</p>
               </div>
               <div className="space-y-1">
-              </div>
-              <div className="space-y-1 sm:col-span-2">
                 <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
                   Shipping Address
                 </p>
                 <p className="text-stone-800 font-bold">
                   Netrakona, Mymensingh, Bangladesh
                 </p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
-                  Last Profile Update
-                </p>
-                <p className="text-stone-800 font-bold">
-                  {user?.updatedAt
-                    ? new Date(user.updatedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })
-                    : "N/A"}
-                </p>
-              </div>
+              </div>             
             </div>
           </Card.Content>
         </Card>
