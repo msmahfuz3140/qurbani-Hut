@@ -71,11 +71,10 @@ const NavBar = () => {
                   key={link.name}
                   href={link.href}
                   className={`px-4 py-2 rounded-xl font-semibold transition
-                  ${
-                    active
+                  ${active
                       ? "bg-blue-600 text-white"
                       : "hover:bg-neutral-100"
-                  }`}
+                    }`}
                 >
                   {link.name}
                 </Link>
@@ -178,9 +177,8 @@ const NavBar = () => {
 
       {/* ================= MOBILE MENU ================= */}
       <div
-        className={`lg:hidden transition-all duration-300 overflow-hidden ${
-          mobileOpen ? "max-h-[500px]" : "max-h-0"
-        }`}
+        className={`lg:hidden transition-all duration-300 overflow-hidden ${mobileOpen ? "max-h-[500px]" : "max-h-0"
+          }`}
       >
         <div className="px-6 pb-6 pt-2 bg-white border-t space-y-4">
 
