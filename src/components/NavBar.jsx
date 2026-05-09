@@ -128,7 +128,7 @@ const NavBar = () => {
                         onClick={async () => {
                           await authClient.signOut();
                           router.push("/login");
-                          router.refresh();
+                          window.location.reload();
                         }}
                         className="flex justify-between w-full"
                       >

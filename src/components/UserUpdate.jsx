@@ -41,6 +41,10 @@ export function UserUpdate({ customTrigger, isOpen, onOpenChange }) {
         description: "Your profile information has been updated.",
         timeout: 3000,
       });
+      // Force refresh of user session
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
 
@@ -84,7 +88,7 @@ export function UserUpdate({ customTrigger, isOpen, onOpenChange }) {
                       Full Name
                     </label>
                     <div className="relative flex items-center">
-                      
+
                       <Input
                         name="name"
                         placeholder="User Name"
@@ -107,7 +111,7 @@ export function UserUpdate({ customTrigger, isOpen, onOpenChange }) {
                       Profile URL
                     </label>
                     <div className="relative flex items-center">
-                      
+
                       <Input
                         name="image"
                         placeholder="https://example.com/avatar.jpg"
