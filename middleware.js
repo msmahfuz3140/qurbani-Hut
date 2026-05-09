@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { toNextJsHandler } from "better-auth/next-js";
 
-export default function middleware(req) {
+export default async function middleware(req) {
   // Check if user is trying to access login/register page while already authenticated
   if (req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/register')) {
     const session = await auth.api.getSession({
