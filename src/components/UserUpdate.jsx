@@ -87,7 +87,7 @@ export function UserUpdate({ customTrigger, isOpen, onOpenChange }) {
                       
                       <Input
                         name="name"
-                        placeholder="John Doe"
+                        placeholder="User Name"
                         className="w-full pl-11 pr-4 py-4 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                       />
                     </div>
@@ -104,7 +104,7 @@ export function UserUpdate({ customTrigger, isOpen, onOpenChange }) {
                     className="space-y-2"
                   >
                     <label className="text-stone-900 text-xs font-black uppercase tracking-widest ml-1">
-                      Avatar URL
+                      Profile URL
                     </label>
                     <div className="relative flex items-center">
                       

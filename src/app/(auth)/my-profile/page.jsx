@@ -71,7 +71,7 @@ const MyProfile = () => {
             </Card.Title>
           </Card.Header>
           <Card.Content className="p-8 space-y-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-8">
               <div className="space-y-1">
                 <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
                   User Name
