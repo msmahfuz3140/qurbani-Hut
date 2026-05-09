@@ -18,7 +18,7 @@ import { UserUpdate } from "@/components/UserUpdate";
 const MyProfile = () => {
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
-  
+
 
   if (isPending) {
     return (
@@ -56,65 +56,61 @@ const MyProfile = () => {
                 <h1 className="text-4xl font-serif text-stone-900 tracking-tight">
                   {user?.name}
                 </h1>
-                
+
               </div>
-              
+
             </div>
             <UserUpdate />
           </Card.Content>
         </Card>
 
-        <div className="container mx-auto">
-          <div className="w-full">
-            <Card className="border border-stone-200 shadow-sm rounded-xl bg-white h-full">
-              <Card.Header className="px-8 pt-8 pb-4 border-b border-stone-100">
-                <Card.Title className="text-xl font-bold text-stone-900 uppercase tracking-tight">
-                  Personal Information
-                </Card.Title>
-              </Card.Header>
-              <Card.Content className="p-8 space-y-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  <div className="space-y-1">
-                    <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
-                      User Name
-                    </p>
-                    <p className="text-stone-800 font-bold">{user?.name}</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
-                      Email Address
-                    </p>
-                    <p className="text-stone-800 font-bold">{user?.email}</p>
-                  </div>
-                  <div className="space-y-1">                  
-                  </div>
-                  <div className="space-y-1 sm:col-span-2">
-                    <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
-                      Shipping Address
-                    </p>
-                    <p className="text-stone-800 font-bold">
-                      Netrakona, Mymensingh, Bangladesh
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
-                      Last Profile Update
-                    </p>
-                    <p className="text-stone-800 font-bold">
-                      {user?.updatedAt
-                        ? new Date(user.updatedAt).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })
-                        : "N/A"}
-                    </p>
-                  </div>
-                </div>
-              </Card.Content>
-            </Card>
-          </div>
-        </div>
+        <Card className="bg-white">
+          <Card.Header className="px-8 pt-8 pb-4 border-b border-stone-100">
+            <Card.Title className="text-xl font-bold text-stone-900 uppercase tracking-tight">
+              Personal Information
+            </Card.Title>
+          </Card.Header>
+          <Card.Content className="p-8 space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div className="space-y-1">
+                <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
+                  User Name
+                </p>
+                <p className="text-stone-800 font-bold">{user?.name}</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
+                  Email Address
+                </p>
+                <p className="text-stone-800 font-bold">{user?.email}</p>
+              </div>
+              <div className="space-y-1">
+              </div>
+              <div className="space-y-1 sm:col-span-2">
+                <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
+                  Shipping Address
+                </p>
+                <p className="text-stone-800 font-bold">
+                  Netrakona, Mymensingh, Bangladesh
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
+                  Last Profile Update
+                </p>
+                <p className="text-stone-800 font-bold">
+                  {user?.updatedAt
+                    ? new Date(user.updatedAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                    : "N/A"}
+                </p>
+              </div>
+            </div>
+          </Card.Content>
+        </Card>
       </div>
     </div>
   );
