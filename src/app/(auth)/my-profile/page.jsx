@@ -42,7 +42,7 @@ const MyProfile = () => {
     <div className="min-h-screen bg-stone-50 py-12 px-4 font-sans">
       <div className="container mx-auto space-y-6">
         <Card className="border border-stone-200 shadow-sm rounded-xl overflow-hidden bg-white">
-          <Card.Content className="p-6 md:p-10 flex flex-col md:flex-row items-center gap-8">
+          <Card.Content className="p-6 md:p-10 flex flex-col justify-center items-center gap-8">
             <Avatar className="w-32 h-32">
               <Avatar.Image
                 referrerPolicy="no-referrer"
@@ -76,30 +76,24 @@ const MyProfile = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                   <div className="space-y-1">
                     <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
+                      User Name
+                    </p>
+                    <p className="text-stone-800 font-bold">{user?.name}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
                       Email Address
                     </p>
                     <p className="text-stone-800 font-bold">{user?.email}</p>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
-                      Member Since
-                    </p>
-                    <p className="text-stone-800 font-bold">
-                      {user?.createdAt
-                        ? new Date(user.createdAt).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })
-                        : "N/A"}
-                    </p>
+                  <div className="space-y-1">                  
                   </div>
                   <div className="space-y-1 sm:col-span-2">
                     <p className="text-stone-400 text-[10px] font-black uppercase tracking-widest">
                       Shipping Address
                     </p>
                     <p className="text-stone-800 font-bold">
-                      412 New York, Beach City, USA 90210
+                      Netrakona, Mymensingh, Bangladesh
                     </p>
                   </div>
                   <div className="space-y-1">
@@ -116,15 +110,6 @@ const MyProfile = () => {
                         : "N/A"}
                     </p>
                   </div>
-                </div>
-
-                <div className="pt-4">
-                  <Button
-                    variant="bordered"
-                    className="border-stone-200 text-stone-900 font-bold rounded-xl px-6 bg-stone-200 hover:bg-stone-300"
-                  >
-                    Manage All Data
-                  </Button>
                 </div>
               </Card.Content>
             </Card>
