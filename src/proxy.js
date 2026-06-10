@@ -4,25 +4,25 @@ import { NextResponse } from "next/server";
 export default async function middleware(req) {
   const { pathname } = req.nextUrl;
 
-  // Only protect my-profile route
-  if (pathname.startsWith("/my-profile")) {
-    // Check for session cookie from better-auth
-    const sessionCookie = req.cookies.get("better-auth.session_token") ||
-      req.cookies.get("better-auth.session") ||
-      req.cookies.get("__session");
+  // Check for session cookie from better-auth
+  const hasSession = req.cookies.get("better-auth.session_token") ||
+    req.cookies.get("better-auth.session") ||
+    req.cookies.get("__session");
 
-    if (!sessionCookie) {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
+  // Protect /my-profile route
+  if (pathname.startsWith("/my-profile") && !hasSession) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+
+  // Protect animal details pages: /animals/1, /animals/2, etc. (not /animals list page)
+  const isAnimalDetail = /^\/animals\/\d+/.test(pathname);
+  if (isAnimalDetail && !hasSession) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   // Redirect authenticated users away from login/register
   if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
-    const sessionCookie = req.cookies.get("better-auth.session_token") ||
-      req.cookies.get("better-auth.session") ||
-      req.cookies.get("__session");
-
-    if (sessionCookie) {
+    if (hasSession) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
@@ -31,5 +31,5 @@ export default async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/login", "/register", "/my-profile"],
+  matcher: ["/login", "/register", "/my-profile", "/animals/:path*"],
 };

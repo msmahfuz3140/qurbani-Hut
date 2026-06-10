@@ -136,15 +136,16 @@ const NavBar = () => {
                       </div>
                     </Dropdown.Item>
 
-                    <Dropdown.Item id="logout" variant="danger">
-                      <div
-                        onClick={async () => {
-                          await authClient.signOut();
-                          router.push("/login");
-                          window.location.reload();
-                        }}
-                        className="flex items-center justify-between w-full px-1 py-1.5 group"
-                      >
+                    <Dropdown.Item
+                      id="logout"
+                      variant="danger"
+                      onAction={async () => {
+                        await authClient.signOut();
+                        router.push("/login");
+                        window.location.reload();
+                      }}
+                    >
+                      <div className="flex items-center justify-between w-full px-1 py-1.5 group">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center">
                             <ArrowRightFromSquare className="size-4 text-white" />
