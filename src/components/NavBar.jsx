@@ -95,12 +95,17 @@ const NavBar = () => {
             {user ? (
               <Dropdown placement="bottom-end">
                 <Dropdown.Trigger>
-                  <Avatar className="cursor-pointer">
-                    <Avatar.Image src={user?.image} />
-                    <Avatar.Fallback>
-                      {user?.name?.charAt(0)}
-                    </Avatar.Fallback>
-                  </Avatar>
+                  <button className="outline-none cursor-pointer rounded-full hover:ring-2 hover:ring-blue-500/50 transition-all">
+                    <Avatar className="cursor-pointer">
+                      <Avatar.Image
+                        referrerPolicy="no-referrer"
+                        src={user?.image}
+                      />
+                      <Avatar.Fallback>
+                        {user?.name?.charAt(0)}
+                      </Avatar.Fallback>
+                    </Avatar>
+                  </button>
                 </Dropdown.Trigger>
 
                 <Dropdown.Popover className="rounded-2xl mt-3 p-2 min-w-[220px] shadow-2xl border border-neutral-100">
