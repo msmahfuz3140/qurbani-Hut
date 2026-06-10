@@ -127,7 +127,7 @@ export default function HeroSlider() {
                     "
                     >
                       <Link
-                        href="/products"
+                        href="/animals"
                         className="
                         text-center
                         px-6 md:px-8
@@ -143,7 +143,7 @@ export default function HeroSlider() {
                         transition
                       "
                       >
-                        Browse All Products
+                        Browse All Animals
                       </Link>
 
                      

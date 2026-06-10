@@ -1,26 +1,35 @@
-import { auth } from "@/lib/auth";
-import { toNextJsHandler } from "better-auth/next-js";
+import { NextResponse } from "next/server";
 
+// Middleware runs on Edge Runtime - NO MongoDB/better-auth imports allowed
 export default async function middleware(req) {
-  // Check if user is trying to access login/register page while already authenticated
-  if (req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/register')) {
-    const session = await auth.api.getSession({
-      headers: req.headers,
-    cookies: req.cookies,
-    query: req.query,
-    method: req.method,
-    body: req.body,
-    context: {
-      // Pass any additional context if needed
+  const { pathname } = req.nextUrl;
+  
+  // Only protect my-profile route
+  if (pathname.startsWith("/my-profile")) {
+    // Check for session cookie (better-auth cookie pattern)
+    const sessionCookie = req.cookies.get("better-auth.session_token") || 
+                          req.cookies.get("better-auth.session") ||
+                          req.cookies.get("__session");
+    
+    if (!sessionCookie) {
+      return NextResponse.redirect(new URL("/login", req.url));
     }
-    });
-
-    // If user is already authenticated, redirect to home page instead of login/register
-    if (session?.user) {
-      return Response.redirect(new URL('/', req.url));
+  }
+  
+  // Redirect authenticated users away from login/register
+  if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
+    const sessionCookie = req.cookies.get("better-auth.session_token") || 
+                          req.cookies.get("better-auth.session") ||
+                          req.cookies.get("__session");
+    
+    if (sessionCookie) {
+      return NextResponse.redirect(new URL("/", req.url));
     }
   }
 
-  // Continue with normal auth handler
-  return toNextJsHandler(auth)(req);
+  return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/login", "/register", "/my-profile"],
+};
