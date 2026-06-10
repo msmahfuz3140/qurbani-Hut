@@ -1,6 +1,3 @@
-import dns from "node:dns";
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
-
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";

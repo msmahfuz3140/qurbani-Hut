@@ -1,39 +1,35 @@
-import dns from "node:dns";
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
-
-import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { auth } from "./lib/auth";
 
-export async function proxy(request) {
-  let session = null;
-  try {
-    session = await auth.api.getSession({
-      headers: await headers(),
-    });
-  } catch (e) {
-    console.error("[proxy] getSession failed (check MONGO_URI & network):", e);
-  }
-  const { pathname } = request.nextUrl;
+// Middleware (proxy) runs on Edge Runtime - NO Node.js-specific imports allowed
+export default async function middleware(req) {
+  const { pathname } = req.nextUrl;
 
-  const authRoutes = ["/login", "/register"];
+  // Only protect my-profile route
+  if (pathname.startsWith("/my-profile")) {
+    // Check for session cookie from better-auth
+    const sessionCookie = req.cookies.get("better-auth.session_token") ||
+      req.cookies.get("better-auth.session") ||
+      req.cookies.get("__session");
 
-  if (session && authRoutes.includes(pathname)) {
-    return NextResponse.redirect(new URL("/my-profile", request.url));
+    if (!sessionCookie) {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
   }
 
-  const isProfilePage = pathname === "/my-profile";
+  // Redirect authenticated users away from login/register
+  if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
+    const sessionCookie = req.cookies.get("better-auth.session_token") ||
+      req.cookies.get("better-auth.session") ||
+      req.cookies.get("__session");
 
-  const isProductDetailPage =
-    pathname.startsWith("/products/") && pathname !== "/products";
-
-  if (!session && (isProfilePage || isProductDetailPage)) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    if (sessionCookie) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/animals/:path*", "/my-profile", "/login", "/register"],
+  matcher: ["/login", "/register", "/my-profile"],
 };
