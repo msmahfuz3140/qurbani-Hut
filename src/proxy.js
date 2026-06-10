@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 // Middleware (proxy) runs on Edge Runtime - NO Node.js-specific imports allowed
-// Only protect minimal routes - auth checks on details pages are done client-side
 export default async function middleware(req) {
   const { pathname } = req.nextUrl;
 
@@ -12,9 +11,20 @@ export default async function middleware(req) {
     cookies.get("__session") ||
     cookies.get("better-auth.session_token_0");
 
-  // Only protect the /my-profile route
+  // Protect /my-profile route
   if (pathname.startsWith("/my-profile") && !hasSession) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    const loginUrl = new URL("/login", req.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Protect animal details pages (e.g. /animals/1, /animals/5)
+  // Only match paths that have a numeric segment after /animals/
+  const isAnimalDetail = /^\/animals\/\d+(\/.*)?$/.test(pathname);
+  if (isAnimalDetail && !hasSession) {
+    const loginUrl = new URL("/login", req.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   // Redirect authenticated users away from login/register
@@ -28,5 +38,5 @@ export default async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/login", "/register", "/my-profile"],
+  matcher: ["/login", "/register", "/my-profile", "/animals/:path*"],
 };

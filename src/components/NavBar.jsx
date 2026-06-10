@@ -2,17 +2,18 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   IoCartOutline,
   IoLogIn,
   IoPersonAdd,
   IoMenu,
   IoClose,
+  IoPersonCircleOutline,
+  IoSettingsOutline,
+  IoLogOutOutline,
 } from "react-icons/io5";
 
-import { Avatar, Dropdown, Label } from "@heroui/react";
-import { ArrowRightFromSquare, Gear, Person } from "@gravity-ui/icons";
 import { authClient } from "@/lib/auth-client";
 import { UserUpdate } from "./UserUpdate";
 import Image from "next/image";
@@ -22,7 +23,7 @@ import Image from "next/image";
 const Logo = () => (
   <div className="flex items-center gap-2">
     <div className="relative w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden">
-      <Image src="/favicon.png" alt="logo" fill className="object-cover" />
+      <Image src="/favicon.png" alt="logo" fill sizes="40px" className="object-cover" />
     </div>
 
     <h1 className="font-black text-xl md:text-2xl">
@@ -31,6 +32,135 @@ const Logo = () => (
     </h1>
   </div>
 );
+
+/* ================= CUSTOM DROPDOWN ================= */
+
+const CustomDropdown = ({ user, onLogout, onSettings, children }) => {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close on outside click
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      {/* Avatar Button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="outline-none cursor-pointer rounded-full hover:ring-2 hover:ring-blue-500/50 transition-all focus:ring-2 focus:ring-blue-500"
+      >
+        {user?.image ? (
+          <img
+            src={user.image}
+            alt={user.name}
+            referrerPolicy="no-referrer"
+            className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover border-2 border-white shadow-md"
+          />
+        ) : (
+          <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+            {user?.name?.charAt(0)?.toUpperCase() || "U"}
+          </div>
+        )}
+      </button>
+
+      {/* Dropdown Menu */}
+      {open && (
+        <div className="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-neutral-100 overflow-hidden z-50 animate-[fadeIn_0.2s_ease]">
+          {/* User Info Header */}
+          <div className="px-5 py-4 border-b border-neutral-100 bg-gradient-to-r from-neutral-50 to-white">
+            <div className="flex items-center gap-3">
+              {user?.image ? (
+                <img
+                  src={user.image}
+                  alt={user.name}
+                  referrerPolicy="no-referrer"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-blue-200"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
+                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-neutral-900 truncate">
+                  {user?.name || "User"}
+                </p>
+                <p className="text-xs text-neutral-500 truncate">
+                  {user?.email || ""}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Menu Items */}
+          <div className="p-2">
+            <Link
+              href="/my-profile"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-blue-50 transition-all group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-sm">
+                <IoPersonCircleOutline className="size-5 text-white" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-semibold text-neutral-800 group-hover:text-blue-600 transition-colors">
+                  My Profile
+                </p>
+                <p className="text-xs text-neutral-400">View your profile</p>
+              </div>
+            </Link>
+
+            <button
+              onClick={() => {
+                setOpen(false);
+                onSettings();
+              }}
+              className="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-orange-50 transition-all group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-sm">
+                <IoSettingsOutline className="size-5 text-white" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-semibold text-neutral-800 group-hover:text-orange-600 transition-colors">
+                  Settings
+                </p>
+                <p className="text-xs text-neutral-400">Update your profile</p>
+              </div>
+            </button>
+
+            <div className="h-px bg-neutral-100 my-1"></div>
+
+            <button
+              onClick={() => {
+                setOpen(false);
+                onLogout();
+              }}
+              className="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-red-50 transition-all group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-sm">
+                <IoLogOutOutline className="size-5 text-white" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-semibold text-red-600 group-hover:text-red-700 transition-colors">
+                  Log Out
+                </p>
+                <p className="text-xs text-red-400">Sign out of your account</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 /* ================= NAVBAR ================= */
 
@@ -49,13 +179,17 @@ const NavBar = () => {
     { name: "Animals", href: "/animals" },
   ];
 
+  const handleLogout = async () => {
+    await authClient.signOut();
+    router.push("/login");
+    window.location.reload();
+  };
+
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 border-b">
       <div className="max-w-7xl mx-auto px-4 lg:px-6">
-
         {/* NAV TOP */}
         <div className="flex h-16 md:h-20 items-center justify-between">
-
           {/* LOGO */}
           <Link href="/">
             <Logo />
@@ -65,16 +199,16 @@ const NavBar = () => {
           <nav className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => {
               const active = pathname === link.href;
-
               return (
                 <Link
                   key={link.name}
                   href={link.href}
                   className={`px-4 py-2 rounded-xl font-semibold transition
-                  ${active
-                      ? "bg-blue-600 text-white"
-                      : "hover:bg-neutral-100"
-                    }`}
+                  ${
+                    active
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "hover:bg-neutral-100 text-neutral-700"
+                  }`}
                 >
                   {link.name}
                 </Link>
@@ -84,87 +218,20 @@ const NavBar = () => {
 
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-2 md:gap-3">
-
             {/* CART */}
-            <button className="relative w-10 h-10 md:w-11 md:h-11 flex items-center justify-center rounded-xl bg-blue-600 text-white">
+            <button className="relative w-10 h-10 md:w-11 md:h-11 flex items-center justify-center rounded-xl bg-blue-600 text-white shadow-md hover:bg-blue-700 transition-all">
               <IoCartOutline size={22} />
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
             </button>
 
             {/* ===== USER AREA ===== */}
             {user ? (
-              <Dropdown placement="bottom-end">
-                <Dropdown.Trigger>
-                  <button className="outline-none cursor-pointer rounded-full hover:ring-2 hover:ring-blue-500/50 transition-all">
-                    <Avatar className="cursor-pointer">
-                      <Avatar.Image
-                        referrerPolicy="no-referrer"
-                        src={user?.image}
-                      />
-                      <Avatar.Fallback>
-                        {user?.name?.charAt(0)}
-                      </Avatar.Fallback>
-                    </Avatar>
-                  </button>
-                </Dropdown.Trigger>
-
-                <Dropdown.Popover className="rounded-2xl mt-3 p-2 min-w-[220px] shadow-2xl border border-neutral-100">
-                  <Dropdown.Menu className="space-y-1">
-                    {/* User Info Header */}
-                    <div className="px-3 py-3 mb-1 border-b border-neutral-100">
-                      <p className="text-sm font-bold text-neutral-900 truncate">{user?.name}</p>
-                      <p className="text-xs text-neutral-500 truncate">{user?.email}</p>
-                    </div>
-
-                    <Dropdown.Item id="profile">
-                      <Link href="/my-profile" className="flex items-center justify-between w-full px-1 py-1.5 group">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                            <Person className="size-4 text-white" />
-                          </div>
-                          <span className="text-sm font-semibold text-neutral-700 group-hover:text-neutral-900">My Profile</span>
-                        </div>
-                      </Link>
-                    </Dropdown.Item>
-
-                    <Dropdown.Item
-                      id="settings"
-                      onAction={() => setIsUserUpdateOpen(true)}
-                    >
-                      <div className="flex items-center justify-between w-full px-1 py-1.5 group">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
-                            <Gear className="size-4 text-white" />
-                          </div>
-                          <span className="text-sm font-semibold text-neutral-700 group-hover:text-neutral-900">Settings</span>
-                        </div>
-                      </div>
-                    </Dropdown.Item>
-
-                    <Dropdown.Item
-                      id="logout"
-                      variant="danger"
-                      onAction={async () => {
-                        await authClient.signOut();
-                        router.push("/login");
-                        window.location.reload();
-                      }}
-                    >
-                      <div className="flex items-center justify-between w-full px-1 py-1.5 group">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center">
-                            <ArrowRightFromSquare className="size-4 text-white" />
-                          </div>
-                          <span className="text-sm font-semibold text-red-500 group-hover:text-red-600">Log Out</span>
-                        </div>
-                      </div>
-                    </Dropdown.Item>
-
-                  </Dropdown.Menu>
-                </Dropdown.Popover>
-              </Dropdown>
+              <CustomDropdown
+                user={user}
+                onLogout={handleLogout}
+                onSettings={() => setIsUserUpdateOpen(true)}
+              />
             ) : (
-              /* ===== LOGIN REGISTER DESKTOP ===== */
               <div className="hidden md:flex gap-3 items-center">
                 <Link
                   href="/login"
@@ -173,7 +240,6 @@ const NavBar = () => {
                   <IoLogIn size={18} />
                   Login
                 </Link>
-
                 <Link
                   href="/register"
                   className="btn-primary flex items-center gap-2 px-5 py-2"
@@ -191,18 +257,17 @@ const NavBar = () => {
             >
               {mobileOpen ? <IoClose size={28} /> : <IoMenu size={28} />}
             </button>
-
           </div>
         </div>
       </div>
 
       {/* ================= MOBILE MENU ================= */}
       <div
-        className={`lg:hidden transition-all duration-300 overflow-hidden ${mobileOpen ? "max-h-[500px]" : "max-h-0"
-          }`}
+        className={`lg:hidden transition-all duration-300 overflow-hidden ${
+          mobileOpen ? "max-h-[500px]" : "max-h-0"
+        }`}
       >
         <div className="px-6 pb-6 pt-2 bg-white border-t space-y-4">
-
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -214,8 +279,54 @@ const NavBar = () => {
             </Link>
           ))}
 
-          {/* MOBILE LOGIN REGISTER */}
-          {!user && (
+          {user ? (
+            <div className="flex flex-col gap-3 pt-4 border-t border-neutral-100">
+              <div className="flex items-center gap-3 px-2">
+                {user?.image ? (
+                  <img
+                    src={user.image}
+                    alt={user.name}
+                    referrerPolicy="no-referrer"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
+                    {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                  </div>
+                )}
+                <div>
+                  <p className="text-sm font-bold text-neutral-900 truncate">
+                    {user?.name}
+                  </p>
+                  <p className="text-xs text-neutral-500 truncate">
+                    {user?.email}
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/my-profile"
+                onClick={() => setMobileOpen(false)}
+                className="btn-secondary text-center py-3"
+              >
+                My Profile
+              </Link>
+              <button
+                onClick={() => {
+                  setMobileOpen(false);
+                  setIsUserUpdateOpen(true);
+                }}
+                className="btn-secondary text-center py-3"
+              >
+                Settings
+              </button>
+              <button
+                onClick={handleLogout}
+                className="btn-primary bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-center py-3"
+              >
+                Log Out
+              </button>
+            </div>
+          ) : (
             <div className="flex flex-col gap-3 pt-4">
               <Link
                 href="/login"
@@ -223,7 +334,6 @@ const NavBar = () => {
               >
                 Login
               </Link>
-
               <Link
                 href="/register"
                 className="btn-primary text-center py-3"

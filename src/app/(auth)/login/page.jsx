@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   IoMailOutline,
@@ -12,6 +13,9 @@ import { authClient } from "@/lib/auth-client";
 import { Form, Input, TextField, FieldError, toast } from "@heroui/react";
 
 const LoginPage = () => {
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,7 +26,7 @@ const LoginPage = () => {
     const { error } = await authClient.signIn.email({
       email,
       password,
-      callbackURL: "/",
+      callbackURL: redirectTo,
     });
 
     if (error) {
@@ -33,7 +37,7 @@ const LoginPage = () => {
   const signIn = async () => {
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/",
+      callbackURL: redirectTo,
     });
   };
 
