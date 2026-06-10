@@ -2,7 +2,7 @@ import BookNowBtn from "@/components/BookNowBtn";
 import { getProducts } from "@/lib/data";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { IoStar } from "react-icons/io5";
+import { IoStar, IoLocationOutline, IoScaleOutline, IoCalendarOutline, IoWaterOutline } from "react-icons/io5";
 
 export async function generateMetadata({ params }) {
   const singleAnimal = await params;
@@ -55,66 +55,94 @@ const AnimalDetailsPage = async ({ params }) => {
   const priceDisplay =
     typeof price === "number" ? price.toLocaleString("en-BD") : price;
 
+  const specs = [
+    { icon: <IoStar className="text-amber-500" size={22} />, label: "Breed", value: breed, color: "from-amber-50 to-yellow-50", border: "border-amber-200" },
+    { icon: <IoLocationOutline className="text-emerald-500" size={22} />, label: "Region", value: location, color: "from-emerald-50 to-teal-50", border: "border-emerald-200" },
+    { icon: <IoScaleOutline className="text-blue-500" size={22} />, label: "Weight", value: weight ? `${weight} kg` : null, color: "from-blue-50 to-indigo-50", border: "border-blue-200" },
+    { icon: <IoCalendarOutline className="text-violet-500" size={22} />, label: "Age", value: age ? `${age} years` : null, color: "from-violet-50 to-purple-50", border: "border-violet-200" },
+    { icon: <IoWaterOutline className="text-cyan-500" size={22} />, label: "Category", value: category, color: "from-cyan-50 to-sky-50", border: "border-cyan-200" },
+  ].filter(item => item.value);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-neutral-50 to-orange-50 py-12 md:py-20 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-blue-50 py-8 md:py-16 px-4">
       <div className="container mx-auto">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden">
+        <div className="max-w-5xl mx-auto">
+          
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-sm text-neutral-400 mb-8">
+            <a href="/" className="hover:text-blue-600 transition-colors">Home</a>
+            <span>/</span>
+            <a href="/animals" className="hover:text-blue-600 transition-colors">Animals</a>
+            <span>/</span>
+            <span className="text-neutral-700 font-semibold">{name}</span>
+          </div>
+
+          {/* Main Card */}
+          <div className="bg-white rounded-3xl shadow-2xl border border-neutral-100 overflow-hidden">
+            
+            {/* Image Section */}
             <div className="relative">
-              <div className="aspect-video">
+              <div className="aspect-[21/9] md:aspect-[2.4/1]">
                 <Image
                   src={image}
                   alt={name}
-                  width={1200}
-                  height={800}
+                  width={1400}
+                  height={600}
                   className="w-full h-full object-cover"
                 />
               </div>
+              
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
 
-              <div className="absolute top-6 left-6 glass px-4 py-2 rounded-full">
-                <span className="text-sm font-bold text-neutral-800 uppercase tracking-wide">
-                  {category}
-                </span>
+              {/* Top Badges */}
+              <div className="absolute top-6 left-6 flex flex-col gap-3">
+                <div className="backdrop-blur-xl bg-white/90 px-5 py-2.5 rounded-full shadow-xl border border-white/30">
+                  <span className="text-sm font-bold text-neutral-800 uppercase tracking-wide">
+                    {category}
+                  </span>
+                </div>
+                {stock < 15 && (
+                  <div className="backdrop-blur-xl bg-gradient-to-r from-red-500/90 to-rose-500/90 px-5 py-2.5 rounded-full shadow-xl border border-white/20">
+                    <span className="text-sm font-bold text-white">Only {stock} left</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Rating on Image */}
+              <div className="absolute bottom-6 right-6 backdrop-blur-xl bg-white/90 px-5 py-2.5 rounded-full shadow-xl border border-white/30 flex items-center gap-2">
+                <IoStar className="text-amber-500" size={20} />
+                <span className="text-lg font-bold text-neutral-900">{rating}</span>
+                <span className="text-sm text-neutral-500">/ 5.0</span>
               </div>
             </div>
 
-            <div className="p-8 md:p-12">
+            {/* Content Section */}
+            <div className="p-6 md:p-10 lg:p-12">
 
-              <div className="text-center mb-8">
-                <p className="text-blue-600 font-black uppercase tracking-[0.3em] text-sm mb-4">
+              {/* Brand & Name */}
+              <div className="mb-8">
+                <p className="text-blue-600 font-black uppercase tracking-[0.25em] text-sm mb-3">
                   {brand}
                 </p>
-                <h1 className="text-4xl md:text-6xl font-serif text-neutral-900 tracking-tighter leading-none mb-6">
+                <h1 className="text-3xl md:text-5xl font-serif text-neutral-900 tracking-tight leading-tight">
                   {name}
                 </h1>
-
-                <div className="flex items-center justify-center gap-6 mb-8">
-                  <div className="flex items-center gap-2 bg-gradient-to-r from-blue-50 to-blue-100 px-4 py-2 rounded-full border border-blue-200">
-                    <IoStar className="text-blue-500" size={20} />
-                    <span className="text-lg font-bold text-neutral-900">
-                      {rating}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-2 rounded-full border border-blue-200">
-                    <span className="text-sm font-semibold text-neutral-700">
-                      {stock} available
-                    </span>
-                  </div>
-                </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                {[
-                  { icon: <IoStar className="text-blue-500" size={20} />, label: "Breed", value: breed },
-                  { icon: <IoStar className="text-blue-500" size={20} />, label: "Region", value: location },
-                  { icon: <IoStar className="text-blue-500" size={20} />, label: "Weight", value: `${weight} kg` },
-                  { icon: <IoStar className="text-blue-500" size={20} />, label: "Age", value: `${age} years` },
-                ].filter(item => item.value).map((info, index) => (
-                  <div key={index} className="text-center p-4 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-2xl border border-neutral-200">
+              {/* Specs Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-8">
+                {specs.map((info, index) => (
+                  <div
+                    key={index}
+                    className={`text-center p-4 md:p-5 bg-gradient-to-br ${info.color} rounded-2xl border ${info.border} hover:shadow-lg hover:scale-[1.02] transition-all duration-300`}
+                  >
                     <div className="flex justify-center mb-2">
-                      {info.icon}
+                      <div className="w-10 h-10 rounded-xl bg-white/80 shadow-sm flex items-center justify-center">
+                        {info.icon}
+                      </div>
                     </div>
-                    <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wide mb-1">
+                    <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
                       {info.label}
                     </p>
                     <p className="text-sm font-bold text-neutral-900">
@@ -124,27 +152,39 @@ const AnimalDetailsPage = async ({ params }) => {
                 ))}
               </div>
 
-              <div className="text-center mb-8">
-                <div className="inline-flex items-end gap-2">
-                  <span className="text-3xl font-black text-blue-600">৳</span>
-                  <span className="text-5xl md:text-6xl font-black text-neutral-900 tracking-tighter">
-                    {priceDisplay}
-                  </span>
-                  <span className="text-lg text-neutral-600 mb-1 font-medium">
-                    BDT
-                  </span>
+              {/* Price Section */}
+              <div className="mb-8 p-6 bg-gradient-to-r from-stone-50 to-neutral-50 rounded-2xl border border-neutral-200">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-1">Price</p>
+                    <div className="flex items-end gap-2">
+                      <span className="text-3xl font-black text-blue-600">৳</span>
+                      <span className="text-4xl md:text-5xl font-black text-neutral-900 tracking-tight">
+                        {priceDisplay}
+                      </span>
+                      <span className="text-lg text-neutral-500 mb-1 font-medium">BDT</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-emerald-600 font-semibold bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-200">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    Verified Listing
+                  </div>
                 </div>
               </div>
 
-              <div className="mb-8">
-                <p className="text-neutral-700 leading-relaxed text-center text-lg">
+              {/* Description */}
+              <div className="mb-8 p-6 bg-stone-50 rounded-2xl border border-stone-200">
+                <h3 className="text-sm font-bold text-neutral-700 uppercase tracking-wider mb-3">Description</h3>
+                <p className="text-neutral-600 leading-relaxed text-base">
                   {description}
                 </p>
               </div>
-      
-              <div className="flex justify-center">
+
+              {/* Book Now Button */}
+              <div className="max-w-md mx-auto">
                 <BookNowBtn />
               </div>
+
             </div>
           </div>
         </div>

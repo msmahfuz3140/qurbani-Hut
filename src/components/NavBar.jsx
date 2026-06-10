@@ -103,13 +103,22 @@ const NavBar = () => {
                   </Avatar>
                 </Dropdown.Trigger>
 
-                <Dropdown.Popover className="rounded-2xl mt-2">
-                  <Dropdown.Menu>
+                <Dropdown.Popover className="rounded-2xl mt-3 p-2 min-w-[220px] shadow-2xl border border-neutral-100">
+                  <Dropdown.Menu className="space-y-1">
+                    {/* User Info Header */}
+                    <div className="px-3 py-3 mb-1 border-b border-neutral-100">
+                      <p className="text-sm font-bold text-neutral-900 truncate">{user?.name}</p>
+                      <p className="text-xs text-neutral-500 truncate">{user?.email}</p>
+                    </div>
 
                     <Dropdown.Item id="profile">
-                      <Link href="/my-profile" className="flex justify-between w-full">
-                        <Label>My Profile</Label>
-                        <Person className="size-4" />
+                      <Link href="/my-profile" className="flex items-center justify-between w-full px-1 py-1.5 group">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                            <Person className="size-4 text-white" />
+                          </div>
+                          <span className="text-sm font-semibold text-neutral-700 group-hover:text-neutral-900">My Profile</span>
+                        </div>
                       </Link>
                     </Dropdown.Item>
 
@@ -117,9 +126,13 @@ const NavBar = () => {
                       id="settings"
                       onAction={() => setIsUserUpdateOpen(true)}
                     >
-                      <div className="flex justify-between w-full">
-                        <Label>Settings</Label>
-                        <Gear className="size-4" />
+                      <div className="flex items-center justify-between w-full px-1 py-1.5 group">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
+                            <Gear className="size-4 text-white" />
+                          </div>
+                          <span className="text-sm font-semibold text-neutral-700 group-hover:text-neutral-900">Settings</span>
+                        </div>
                       </div>
                     </Dropdown.Item>
 
@@ -130,12 +143,14 @@ const NavBar = () => {
                           router.push("/login");
                           window.location.reload();
                         }}
-                        className="flex justify-between w-full"
+                        className="flex items-center justify-between w-full px-1 py-1.5 group"
                       >
-                        <Label className="text-red-600">
-                          Log Out
-                        </Label>
-                        <ArrowRightFromSquare className="size-4 text-red-600" />
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center">
+                            <ArrowRightFromSquare className="size-4 text-white" />
+                          </div>
+                          <span className="text-sm font-semibold text-red-500 group-hover:text-red-600">Log Out</span>
+                        </div>
                       </div>
                     </Dropdown.Item>
 
